@@ -1,0 +1,82 @@
+//Cynthia Rittenbach
+//cr438
+//section 003
+//FALL 2025
+
+
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Stack;
+
+
+
+class Main438 {
+    static String alphabet = "^[0-9ab+\\-*/()\\.]+$";
+    static String[] states = { "q0", "q1", "q2", "q3" };
+    static String startState = states[0];
+    static String[] finalStates = { states[3] };
+    static String presentState = startState;
+    static char presentTop;
+    static Stack<Character> stack = new Stack<>();
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Project 2 for CS 341");
+        System.out.println("Section number: 003");
+        System.out.println("Semester: Fall 2025");
+        System.out.println("Written by: Cynthia Rittenbach, cr438");
+        System.out.println("Instructor: Arashdeep Kaur, ak3257@njit.edu");
+        System.out.println("");
+        
+        //ask user for number of strings to evaluate
+        int n;
+        int number = 0;
+        stack.push('$');
+        System.out.print("Enter an integer n >= 0: ");
+        //check if its an int
+        if (scanner.hasNextInt()) {
+            n = scanner.nextInt();
+            scanner.nextLine();
+            //check if its 0
+            if (n > 0) {
+                System.out.println("you entered: " + n);
+                number = n;
+            } else {
+                System.out.println("invalid input");
+                System.exit(0); 
+            }
+        } else {
+            System.out.println("invalid input");
+            System.exit(0);
+        }
+        //ask for strings
+        for (int i = 0; i < number; i++) {
+            int j = i + 1;
+            
+            boolean isValid = false;
+            String string = "";
+            
+            while (!isValid) {
+                presentState = states[0];
+                presentTop = stack.peek();
+                System.out.print("Enter string " + j + " of " + number + ": ");
+                string = scanner.nextLine();
+                //check if string fits in alphabet
+                if (string.matches(alphabet)) {
+                    isValid = true;
+                    boolean rejected = false;
+                    System.out.println(string);
+        
+        
+                
+                } else {
+                    System.out.println("Entered string contains invalid input bits");
+            
+                }
+            }
+        }
+        
+    }
+}
