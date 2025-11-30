@@ -329,6 +329,10 @@ class Main438 {
                             
                     }
                  }
+
+                for (int m = 0; m < highestIndexReached; m++) {
+                    System.out.println(string.charAt(m));
+                 }
                 
                 } else {
                     System.out.println("Entered string contains invalid input bits");
