@@ -12,7 +12,7 @@ import java.util.Stack;
 
 
 class Main438 {
-    static final int maxConfigs = 5000;
+    static final int maxConfigs = 10000;
     static final int tracesToKeep = 10;
     static int highestIndexReached = 0;
     static String alphabet = "^[0-9ab+\\-*/()\\.]+$";
@@ -22,6 +22,7 @@ class Main438 {
     static String presentState = startState;
     static char presentTop;
     static Stack<Character> stack = new Stack<>();
+    static Stack<Character> stackCopy = new Stack<>();
     
     static class Configuration {
         String state;             
@@ -305,6 +306,7 @@ class Main438 {
                             if (t.consumesInput && currentSymbol != '#') {
                                
                                 newIndex++;
+                                stackCopy = newStack;
                             }
                             
                             String transitionDetail = 
@@ -331,8 +333,12 @@ class Main438 {
                  }
 
                 for (int m = 0; m < highestIndexReached; m++) {
-                    System.out.println(string.charAt(m));
+                    System.out.print(string.charAt(m));
                  }
+                 
+                
+                 
+                 
                 
                 } else {
                     System.out.println("Entered string contains invalid input bits");
