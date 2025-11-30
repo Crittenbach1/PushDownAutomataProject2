@@ -1,0 +1,364 @@
+//Cynthia Rittenbach
+//cr438
+//section 003
+//FALL 2025
+
+
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Stack;
+import java.util.ListIterator;
+
+
+
+class Main438 {
+    static final int maxConfigs = 10000;
+    static final int tracesToKeep = 10;
+    static int highestIndexReached = 0;
+    static String alphabet = "^[0-9ab+\\-*/()\\.]+$";
+    static String[] states = { "q0", "q1", "q2", "q3" };
+    static String startState = states[0];
+    static String[] finalStates = { states[3] };
+    static String presentState = startState;
+    static char presentTop;
+    static Stack<Character> stack = new Stack<>();
+    static char finalTop;
+    static Configuration bestFailedConf = null;
+    
+    static class Configuration {
+        String state;             
+        int index;                 
+        Stack<Character> stack;
+        String trace;
+    
+        Configuration(String state, int index, Stack<Character> stack, String trace) {
+            this.state = state;
+            this.index = index;
+            this.stack = stack;
+            this.trace = trace;
+        }
+    }
+    
+    
+    static class Transition {
+        String nextState;
+        String pushSymbols;
+        boolean consumesInput;
+        
+         Transition(String nextState, String pushSymbols, boolean consumesInput) {
+            this.nextState = nextState;
+            this.pushSymbols = pushSymbols;
+            this.consumesInput = consumesInput;
+        }
+    }
+    
+    public static List<Transition> delta438(String currentState, char inpS, char topSS ) {
+        List<Transition> nextMoves = new ArrayList<>();
+        
+       
+        
+        switch (currentState) {
+            case "q0":
+                nextMoves.add(new Transition("q1", "$", false));
+                break;
+            case "q1":
+                if (topSS == '$') {
+                    nextMoves.add(new Transition("q2", "S$", false));
+                }
+                break;
+            case "q2":
+                if (topSS == 'S') {
+                    nextMoves.add(new Transition("q2", "aTa", false));
+                }
+                
+                if (topSS == inpS) {
+                    
+                    nextMoves.add(new Transition("q2", "", true));
+                }
+                
+                if (topSS == 'T') {
+                    nextMoves.add(new Transition("q2", "bTb", false));
+                    nextMoves.add(new Transition("q2", "aCa", false));
+                }
+                
+                
+                              
+                if (topSS == 'C') {
+                   
+                    nextMoves.add(new Transition("q2", "HF", false));
+                    nextMoves.add(new Transition("q2", "H", false));
+                    nextMoves.add(new Transition("q2", "(C)", false));
+                    nextMoves.add(new Transition("q2", "(C-C)", false));
+                    nextMoves.add(new Transition("q2", "(C+C)", false));
+                    nextMoves.add(new Transition("q2", "(C/C)", false));
+                    nextMoves.add(new Transition("q2", "(C*C)", false));
+                }
+                
+                
+                if (topSS == 'F') {
+                    
+                    nextMoves.add(new Transition("q2", "+HF", false));
+                    nextMoves.add(new Transition("q2", "/HF", false));
+                    nextMoves.add(new Transition("q2", "-HF", false));
+                    nextMoves.add(new Transition("q2", "*HF", false));
+                    nextMoves.add(new Transition("q2", "*(C)", false));
+                    nextMoves.add(new Transition("q2", "/(C)", false));
+                    nextMoves.add(new Transition("q2", "+(C)", false));
+                    nextMoves.add(new Transition("q2", "-(C)", false));
+                    
+                    
+                    nextMoves.add(new Transition("q2", "", false));
+                }
+                
+                
+                if (topSS == 'H') {
+                    
+                    nextMoves.add(new Transition("q2", "Y.Y", false));
+                    
+                    nextMoves.add(new Transition("q2", "Y.", false));
+                    
+                    
+                    nextMoves.add(new Transition("q2", ".Y", false));
+                }
+                
+                if (topSS == 'Y') {
+                  
+                    nextMoves.add(new Transition("q2", "N", false));
+                    
+                    nextMoves.add(new Transition("q2", "YN", false));
+                }
+                
+               
+                
+                
+                if (topSS == 'N') {
+                   
+                    nextMoves.add(new Transition("q2", "0", false));
+                    
+                    nextMoves.add(new Transition("q2", "1", false));
+                
+                    nextMoves.add(new Transition("q2", "2", false));
+                  
+                    nextMoves.add(new Transition("q2", "3", false));
+                  
+                    nextMoves.add(new Transition("q2", "4", false));
+                    
+                  
+                    nextMoves.add(new Transition("q2", "5", false));
+                    
+                 
+                    nextMoves.add(new Transition("q2", "6", false));
+                    
+                    
+                    nextMoves.add(new Transition("q2", "7", false));
+                    
+                    
+                    nextMoves.add(new Transition("q2", "8", false));
+                    
+                    nextMoves.add(new Transition("q2", "9", false));
+                }
+                
+                
+                if (inpS == '#' && topSS == '$') {
+                    nextMoves.add(new Transition("q3", "", false));
+                }
+                            
+                break;
+            case "q3":
+                System.out.println("hello from q3");
+                break;
+            default:
+              
+                break;
+        }
+        
+        //System.out.println("--------------------------------------");
+        
+        
+        
+        return nextMoves;
+    }
+    
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Project 2 for CS 341");
+        System.out.println("Section number: 003");
+        System.out.println("Semester: Fall 2025");
+        System.out.println("Written by: Cynthia Rittenbach, cr438");
+        System.out.println("Instructor: Arashdeep Kaur, ak3257@njit.edu");
+        System.out.println("");
+        
+        //ask user for number of strings to evaluate
+        int n;
+        int number = 0;
+        stack.push('$');
+        System.out.print("Enter an integer n >= 0: ");
+        //check if its an int
+        if (scanner.hasNextInt()) {
+            n = scanner.nextInt();
+            scanner.nextLine();
+            //check if its 0
+            if (n > 0) {
+                System.out.println("you entered: " + n);
+                number = n;
+            } else {
+                System.out.println("invalid input");
+                System.exit(0); 
+            }
+        } else {
+            System.out.println("invalid input");
+            System.exit(0);
+        }
+        //ask for strings
+        for (int i = 0; i < number; i++) {
+            int j = i + 1;
+            
+            boolean isValid = false;
+            String string = "";
+            
+            while (!isValid) {
+                presentState = states[0];
+                presentTop = stack.peek();
+                System.out.print("Enter string " + j + " of " + number + ": ");
+                string = scanner.nextLine();
+                //check if string fits in alphabet
+                if (string.matches(alphabet)) {
+                    isValid = true;
+                    boolean rejected = false;
+                    System.out.println(string);
+                    
+                    Stack<Character> initialStack = new Stack<>();
+                    
+                    Configuration initialConfig = new Configuration(startState, 0, initialStack, "");
+                    
+                   List<Configuration> configList = new ArrayList<>();
+                   configList.add(initialConfig);
+
+                    boolean accepted = false;
+                    
+                    while (!configList.isEmpty()) {
+                        char currentSymbol;
+                        
+                        configList.sort((c1, c2) -> Integer.compare(c2.index, c1.index));
+                        
+                        Configuration conf = configList.remove(0);
+                        
+                  if (conf.index > highestIndexReached) {
+                        highestIndexReached = conf.index;
+                        bestFailedConf = conf; 
+                    }
+                        
+                        if (conf.index > highestIndexReached) {
+        highestIndexReached = conf.index;
+    }
+
+
+                        if (configList.size() > maxConfigs) {
+                            int pruningIndex = tracesToKeep - 1; 
+                    
+                            if (configList.size() > pruningIndex) {
+                                int indexThreshold = configList.get(pruningIndex).index; 
+                     
+                                while (configList.size() > tracesToKeep) {
+                                    configList.remove(configList.size() - 1); 
+                                }
+                            }
+                        }
+                                            
+                        if (conf.state.equals("q3") && conf.index == string.length() && conf.stack.isEmpty()) {
+                            System.out.println("ACCEPTED: " + conf.trace);
+                            accepted = true;
+                            
+                            break;
+                        }
+                                                
+                        if (conf.stack.isEmpty()) {
+                            presentTop = '#';
+                        } else {
+                            presentTop = conf.stack.peek();
+                        }
+                        
+                        if (conf.index < string.length()) {
+                            currentSymbol = string.charAt(conf.index);
+                        } else {
+                            currentSymbol = '#';
+                        }
+                        
+                        
+                
+                        List<Transition> nextMoves = delta438(conf.state, currentSymbol, presentTop);
+                        
+                        
+                        
+                        for (Transition t : nextMoves) {
+                            @SuppressWarnings("unchecked")
+                            Stack<Character> newStack = (Stack<Character>) conf.stack.clone();
+                            
+                            
+                            char poppedValue = '#';
+                            if (!newStack.isEmpty()) {
+                                poppedValue = newStack.pop();
+                            }
+                            
+                            for (int p = t.pushSymbols.length() - 1; p >= 0; p--) {
+                                newStack.push(t.pushSymbols.charAt(p));
+                            }
+                            
+                            if (newStack.size() > 200) {
+                                continue;
+                            }
+                                                    
+                            int newIndex = conf.index;
+                            String newTrace = conf.trace;
+                            if (t.consumesInput && currentSymbol != '#') {
+                               
+                                newIndex++;
+                                finalTop = newStack.peek();
+                            }
+                            
+                            String transitionDetail = 
+    "\n> -------------------------" +                        
+    "\n> Present State: " + conf.state +
+    "\n> Current input symbol under R-head: " + (t.consumesInput ? String.valueOf(currentSymbol) : "epsilon") +
+    "\n> Stack Top: " + (presentTop != '#' ? String.valueOf(presentTop) : "epsilon") +
+    "\n> Symbol popped from Stack: " + (poppedValue != '#' ? String.valueOf(poppedValue) : "epsilon") +
+    "\n> Symbols pushed onto Stack: " + (t.pushSymbols.isEmpty() ? "epsilon" : t.pushSymbols) +
+    "\n> Next State: " + t.nextState;
+
+                             newTrace = conf.trace + transitionDetail;
+                            
+                            
+                            Configuration newConf = new Configuration(t.nextState, newIndex, newStack, newTrace);
+                            
+                            if (configList.size() < maxConfigs) {
+                                configList.add(newConf);
+                            }
+                            
+                            
+                            
+                    }
+                 }
+                 
+                 if (!accepted) {
+                     System.out.println("REJECTED");
+                     System.out.println(bestFailedConf.trace);
+                 }
+                 
+
+                
+     
+       
+                 
+                 
+                
+                } else {
+                    System.out.println("Entered string contains invalid input bits");
+            
+                }
+            }
+        }
+        
+    }
