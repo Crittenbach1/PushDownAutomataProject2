@@ -336,7 +336,12 @@ class Main438 {
                     System.out.print(string.charAt(m));
                  }
                  
-                
+                 char pop;
+                 for (int z = 0; z < stackCopy.size(); z++) {
+                    pop =  stackCopy.pop();
+                    System.out.print(pop);
+                 }
+                            
                  
                  
                 
